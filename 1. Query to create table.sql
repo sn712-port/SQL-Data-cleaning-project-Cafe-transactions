@@ -15,7 +15,13 @@ create table
 	)
 ;
 
-/* Import data using pgAdmin GUI (Encoding: UFT8 | On Error: ignore | Log Verbosity: default) */
+/* IMPORTANT: Import data using pgAdmin GUI (Encoding: UFT8 | On Error: ignore | Log Verbosity: default) */
 
 -- Run SELECT statement to view the dataset
+
 select * from cafe_trans 
+
+
+/* Backup table */
+
+create table cafe_trans_backup as select * from cafe_trans;
