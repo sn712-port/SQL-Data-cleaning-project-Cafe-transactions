@@ -1,6 +1,7 @@
 /* Validation queries - Before cleaning */
 
 -- Check for duplicates in transaction IDs (not other fields because it doesn't make sense to check; they have duplicates).
+
 select
 	transaction_id
 	, count(*)
@@ -48,5 +49,19 @@ union all
 	from cafe_trans
 	group by transaction_year, source_column
 
+		
+-- Validating that price_per_item * quantity = total_spent.
+		
+select
+	price_per_item
+	, quantity
+	, cast(total_spent as numeric) as total_spent
+	, (cast(price_per_item as numeric) * cast(quantity as numeric)) as total_calc
+	, abs((cast(total_spent as numeric) - (cast(price_per_item as numeric) * cast(quantity as numeric)))) as diff
+from
+	cafe_trans
+order by
+	diff desc
+	
 
 
