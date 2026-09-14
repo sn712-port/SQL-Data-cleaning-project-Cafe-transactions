@@ -103,7 +103,7 @@ update cafe_trans
 
 /* 6. Deleting rows where critcal fields have null or errors that cannot be updated with clean-up queries above */
 
--- Create a temp table that can be used as a reference to identify which items should be removed from analyses - this is defined as items where two out of three of price, quantity, or price is null or returns errors.
+-- Create a temp table that can be used as a reference to identify which items should be removed from analyses. This is defined as items where two out of three of price, quantity, or price is null or if 2/3 returns errors.
 
 create temp table delete_error as(
 
@@ -138,7 +138,7 @@ create temp table delete_error as(
 ;
 
 
--- Referencing temp table above that identifies data that cannot be corrected, delete items that still have errors
+-- Referencing temp table above that identifies data that cannot be corrected, delete items that still have errors.
 
 delete from cafe_trans as tr
 using delete_error as er
@@ -150,13 +150,15 @@ where tr.transaction_id = er.transaction_id
 			or (er.price_err = 1 and er.total_err = 1)
 			or er.transaction_date is null 
 			or er.transaction_date in ('ERROR','UNKNOWN')
+				--the logic below makes sure items with invalid category that cannot be inferred from price get deleted.
 			or (
 				er.item_category is null or er.item_category in ('ERROR','UNKNOWN')
 				) 
 			   and
-				cast(er.price_per_item as int) in ('3','4')
+				cast(er.price_per_item as int) in (3,4) 
 		)
 ;
+
 
 /* 7. Clean up payment_method and trans_location to keep values more consistent by replacing errors with 'Unknown' */
 
