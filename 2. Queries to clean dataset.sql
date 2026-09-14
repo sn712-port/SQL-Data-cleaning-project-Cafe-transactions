@@ -151,9 +151,7 @@ where tr.transaction_id = er.transaction_id
 			or er.transaction_date is null 
 			or er.transaction_date in ('ERROR','UNKNOWN')
 				--the logic below makes sure items with invalid category that cannot be inferred from price get deleted.
-			or (
-				er.item_category is null or er.item_category in ('ERROR','UNKNOWN')
-				) 
+			or (er.item_category is null or er.item_category in ('ERROR','UNKNOWN')) 
 			   and
 				cast(er.price_per_item as int) in (3,4) 
 		)
