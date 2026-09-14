@@ -2,6 +2,8 @@
 This is a temp table which can be run once each session and is stored in memory until connection to the server ends.
 The query compiles distinct values of items and prices, ignoring lines where either columns returns null or errors. */
 
+drop table if exists menu_table;
+
 create temp table menu_table as (
 select
 	distinct
@@ -104,6 +106,8 @@ update cafe_trans
 /* 6. Deleting rows where critcal fields have null or errors that cannot be updated with clean-up queries above */
 
 -- Create a temp table that can be used as a reference to identify which items should be removed from analyses. This is defined as items where two out of three of price, quantity, or price is null or if 2/3 returns errors.
+
+drop table if exists delete_error;
 
 create temp table delete_error as(
 
