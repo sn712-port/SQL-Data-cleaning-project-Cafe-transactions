@@ -1,7 +1,7 @@
 # Data cleaning project: Cafe transactions
 
 ## Project objective:
-Utilize SQL in PostgreSQL to transform and clean a dirty dataset, getting it ready for further analysis. Transaction data can provide insights into trends and opportunities for improving efficiency. While missing information can be extrapolated, for the purpose of this exercise, the approach is to clean the dataset without using estimation to derive values where data is corrupted.
+Utilize SQL in PostgreSQL to transform and clean a dirty dataset, getting it ready for further analysis. Transaction data can provide insights into trends and opportunities for improving operational efficiency. While missing information can be extrapolated, for the purpose of this exercise, the approach is to clean the dataset without using estimation to derive values where data is corrupted.
 
 ## Tools: 
 PostgreSQL & pgAdmin4  |  Google sheets
@@ -23,7 +23,7 @@ A quick review of the dataset in Google Sheets reveals missing values and errors
 
   #1 - *quantity*, *price_per_item*, and *total_spent* have a mathematical relationship. For any rows with 2 out of 3 items, the third can be inferred. 
   
-  #2 - With pricing structure not changing over time, a menu can be created as a reference and used to infer **price_per_item** from **item_category** and vice versa. In the case where **price_per_item** is known but is either $3 or $4, I opt to exclude these rows instead of randomly assigning item category since there are more than one item with $3 and $4 per unit. 
+  #2 - With pricing structure not changing over time, a menu can be programmatically created as a temp table and used as a reference to infer **price_per_item** from **item_category** and vice versa. In the case where **price_per_item** is known but is either $3 or $4, I opt to exclude these rows instead of randomly assigning item category since there are more than one item with $3 and $4 per unit. 
   
   #3 - Rows with null or errors in **transaction_date** field are to be excluded to keep the dataset clean, especially for time series analyses.
 
@@ -36,6 +36,11 @@ A quick review of the dataset in Google Sheets reveals missing values and errors
   3. Clean data using various SQL concepts: *create temp table*, *update* records via *set* conditions, *update* records *using* values from temp table, *delete from* table *using* a temp table as reference, *alter column type*
      
       a. Validate values to ensure issues identified in 1a have been dealt with.
+
+***Results:***
+
+- Successfully cleaned 9,089 records (90.9% of original 10,000).
+- Achieved 95%+ data quality across all key fields.
 
 
 ### Step 3: Use dataset for analyses
@@ -68,7 +73,7 @@ Use SQL queries, including select statements, aggregate functions, joins, common
 <img width="350" height="162" alt="Dataset after cleaning" src="https://github.com/user-attachments/assets/e3f49f77-37a2-4bdc-8ba1-c146bf9110bc" />
 
 
-## Analyses samples
+## Findings summary
 
 <img width="512" height="340" alt="Annual revenue by item category" src="https://github.com/user-attachments/assets/1306b05c-de47-43ce-8593-ed8022966369" />
 
